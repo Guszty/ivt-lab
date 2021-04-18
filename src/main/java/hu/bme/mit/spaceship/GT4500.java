@@ -88,5 +88,6 @@ public class GT4500 implements SpaceShip {
   }
 
   //semmi
-  //még annyi se
+  
+  //ez itt egy comment
 }

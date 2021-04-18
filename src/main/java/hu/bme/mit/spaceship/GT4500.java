@@ -4,6 +4,9 @@ package hu.bme.mit.spaceship;
 * A simple spaceship with two proton torpedo stores and four lasers
 */
 //branch-b
+//branch-a
+//branch-A
+//branch-B
 public class GT4500 implements SpaceShip {
 
   private TorpedoStore primaryTorpedoStore;
@@ -87,5 +90,4 @@ public class GT4500 implements SpaceShip {
 
     return firingSuccess;
   }
-
 }

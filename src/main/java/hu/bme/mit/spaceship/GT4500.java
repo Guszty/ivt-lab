@@ -87,6 +87,6 @@ public class GT4500 implements SpaceShip {
     return firingSuccess;
   }
 
-  
-
+  //semmi
+  //még annyi se
 }

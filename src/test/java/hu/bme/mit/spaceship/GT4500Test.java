@@ -20,31 +20,20 @@ public class GT4500Test {
   }
 
   @Test
-  public void fireTorpedo_Single_Success(){
+  public void fireTorpedo_SINGLE_Success(){
     // Arrange
     when (mockTS1.fire(1)).thenReturn(true);
 
     // Act
-    ship.fireTorpedo(FiringMode.SINGLE);
+    boolean result = ship.fireTorpedo(FiringMode.SINGLE);
 
     // Assert
     verify(mockTS1, times(1)).fire(1);
+    assertEquals(true, result);
   }
 
   @Test
-  public void fireTorpedo_All_Success(){
-    // Arrange
-    when (mockTS1.fire(1)).thenReturn(true);
-
-    // Act
-    ship.fireTorpedo(FiringMode.ALL);
-
-    // Assert
-    verify(mockTS1, times(1)).fire(1);
-  }
-
-  @Test
-  public void fireTorpedo_Single_Failure(){
+  public void fireTorpedo_SINGLE_Failure(){
     // Arrange
     when (mockTS1.fire(1)).thenReturn(false);
 
@@ -57,20 +46,7 @@ public class GT4500Test {
   }
 
   @Test
-  public void fireTorpedo_All_Failure(){
-    // Arrange
-    when (mockTS1.fire(1)).thenReturn(false);
-
-    // Act
-    boolean result = ship.fireTorpedo(FiringMode.ALL);
-
-    // Assert
-    verify(mockTS1, times(1)).fire(1);
-    assertEquals(false, result);
-  }
-
-  @Test
-  public void firePrimaryTorpedo_Single_Success(){
+  public void firePrimaryTorpedo_SINGLE_Success(){
     // Arrange
     when(mockTS1.fire(1)).thenReturn(true);
     when(mockTS2.fire(1)).thenReturn(false);
@@ -83,9 +59,9 @@ public class GT4500Test {
     verify(mockTS2,times(0)).fire(1);
     assertEquals(true, result);
   }
-
+  
   @Test
-  public void fireSecondaryTorpedo_Single_Success(){
+  public void fireSecondaryTorpedo_SINGLE_Success(){
 
     // Arrange
     when(mockTS1.fire(1)).thenReturn(false);
@@ -101,5 +77,98 @@ public class GT4500Test {
     verify(mockTS2,times(1)).fire(1);
     assertEquals(true, result);
   }
+
+  @Test
+  public void firePrimaryTorpedo_SINGLE_PrimaryEmptySecondaryHasTorpedo_Success(){
+    // Arrange
+    when(mockTS1.fire(1)).thenReturn(false);
+    when(mockTS2.fire(1)).thenReturn(true);
+    when(mockTS1.isEmpty()).thenReturn(true);
+    when(mockTS2.isEmpty()).thenReturn(false);
+
+    //Act
+    boolean result = ship.fireTorpedo(FiringMode.SINGLE);
+
+    //Assert
+    assertEquals(true, result);
+  }
+
+  @Test
+  public void fireSecondaryTorpedo_SINGLE_SecondaryEmptyPrimaryHasTorpedo_Success(){
+    // Arrange
+    when(mockTS1.fire(1)).thenReturn(true);
+    when(mockTS2.fire(1)).thenReturn(false);
+    when(mockTS1.isEmpty()).thenReturn(false);
+    when(mockTS2.isEmpty()).thenReturn(true);
+
+    //Act
+    //primary lő -> secondary legyen
+    ship.fireTorpedo(FiringMode.SINGLE);
+    boolean result = ship.fireTorpedo(FiringMode.SINGLE);
+
+    //Assert
+    assertEquals(true, result);
+  }
+
+  @Test
+  public void fireTorpedo_ALL_Success(){
+    // Arrange
+    when (mockTS1.fire(1)).thenReturn(true);
+    when (mockTS2.fire(1)).thenReturn(true);
+
+    // Act
+    boolean result = ship.fireTorpedo(FiringMode.ALL);
+
+    // Assert
+    verify(mockTS1, times(1)).fire(1);
+    verify(mockTS2, times(1)).fire(1);
+    assertEquals(true, result);
+  }
+
+  @Test
+  public void fireTorpedo_ALL_Failure(){
+    // Arrange
+    when (mockTS1.fire(1)).thenReturn(false);
+    when (mockTS2.fire(1)).thenReturn(false);
+
+    // Act
+    boolean result = ship.fireTorpedo(FiringMode.ALL);
+
+    // Assert
+    verify(mockTS1, times(1)).fire(1);
+    verify(mockTS2, times(1)).fire(1);
+    assertEquals(false, result);
+  }
+
+  @Test
+  public void fireTorpedo_ALL_WithOneFilled_Failure(){
+    // Arrange
+    when(mockTS1.fire(1)).thenReturn(true);
+    when(mockTS2.fire(1)).thenReturn(false);
+
+    // Act
+    boolean result = ship.fireTorpedo(FiringMode.ALL);
+
+    // Assert
+    verify(mockTS1,times(1)).fire(1);
+    verify(mockTS2,times(1)).fire(1);
+    assertEquals(false, result);
+  }
+
   
+  @Test
+  public void fireTorpedo_ALL_PrimaryTorpedoStoreEmpty_Failure(){
+    //Arrange
+    when(mockTS1.isEmpty()).thenReturn(true);
+    when(mockTS2.isEmpty()).thenReturn(false);
+    when(mockTS1.fire(1)).thenReturn(false);
+    when(mockTS2.fire(1)).thenReturn(true);
+
+    //Act
+    boolean result = ship.fireTorpedo(FiringMode.ALL);
+
+    //Assert
+    assertEquals(false, result);
+  }
+
 }

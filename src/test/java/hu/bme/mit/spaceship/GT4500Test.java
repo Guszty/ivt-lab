@@ -154,7 +154,6 @@ public class GT4500Test {
     verify(mockTS2,times(1)).fire(1);
     assertEquals(false, result);
   }
-
   
   @Test
   public void fireTorpedo_ALL_PrimaryTorpedoStoreEmpty_Failure(){
